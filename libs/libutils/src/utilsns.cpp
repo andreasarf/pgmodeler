@@ -85,7 +85,9 @@ namespace UtilsNs {
 
 	QString getStringHash(const QString& string)
 	{
-		QCryptographicHash hash_gen(QCryptographicHash::Md5);
+		// A fresh QCryptographicHash per call reloads an OpenSSL provider (Qt 6.12 + OpenSSL 4), which dominates model loading
+		thread_local QCryptographicHash hash_gen(QCryptographicHash::Md5);
+		hash_gen.reset();
 		hash_gen.addData(string.toUtf8());
 		return hash_gen.result().toHex();
 	}
