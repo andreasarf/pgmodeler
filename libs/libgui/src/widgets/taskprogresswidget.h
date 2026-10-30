@@ -31,6 +31,7 @@
 #include "guiglobal.h"
 #include "ui_taskprogresswidget.h"
 #include <map>
+#include <QElapsedTimer>
 
 class __libgui TaskProgressWidget: public QDialog, public Ui::TaskProgressWidget {
 	Q_OBJECT
@@ -38,6 +39,9 @@ class __libgui TaskProgressWidget: public QDialog, public Ui::TaskProgressWidget
 	private:
 		//! \brief Stores the icons that are shown as the icons tokens are send via	updateProgress() slot
 		std::map<unsigned, QIcon> icons;
+
+		//! \brief Tracks the time since the last macOS event loop wait in updateProgress()
+		QElapsedTimer last_refresh;
 
 	public:
 		TaskProgressWidget(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::Widget);
